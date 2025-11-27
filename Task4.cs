@@ -1,79 +1,42 @@
 using System;
-class ArithmeticCalculator
+
+class Calculator
 {
-    // --- Methods for Arithmetic Operations ---
-    static double Add(double a, double b)
-    {
-        return a + b;
-    }
-    static double Substract(double a, double b)
-    {
-        return a - b;
-    }
-    static double Multiply(double a, double b)
-    {
-        return a * b;
-    }
-    static double Divide(double a, double b)
-    {
-        return a / b;    
-    }
     static void Main()
     {
-        char again = 'Y';
-
-        while (again == 'Y'  || again == 'y')
+        while (true)
         {
-            Console.WriteLine("Press any following key to perform an arithmetic operation:");
-            Console.Writeline("1 - Addition");
-            Console.WriteLine("2 - Substraction");
-            Console.WriteLine("3 - Multiplication");
-            Console.WriteLine("4 - Division");
-
-            Console.Write("Your Choice: ");
+            Console.WriteLine("Choose Operation: 1-Add  2-Sub  3-Mul  4-Div");
             string choice = Console.ReadLine();
 
             Console.Write("Enter Value 1: ");
-            double value1 = Convert \.ToDouble(Console.ReadLine());
+            double a = double.Parse(Console.ReadLine());
 
             Console.Write("Enter Value 2: ");
-            double value2 = Convert.ToDouble(Console.ReadLine());
+            double b = double.Parse(Console.ReadLine());
 
             double result = 0;
-            string operationSymbol = "";
+            bool valid = true;
 
-            // Switch case to choose operation 
             switch (choice)
             {
-                case "1":
-                    result = Add(value1, value2);
-                    operationSymbol = "+";
+                case "1": result = a + b; break;
+                case "2": result = a - b; break;
+                case "3": result = a * b; break;
+                case "4":
+                    if (b == 0) { Console.WriteLine("Cannot divide by zero."); valid = false; }
+                    else result = a / b;
                     break;
-
-                case "2"
-                    result = Substract(value1, value2);
-                    operationSymbol = "-";
+                default:
+                    Console.WriteLine("Invalid option."); valid = false;
                     break;
-                case "3"
-                    result = Multiply(value1, value2);
-                    operationSymbol = "*";
-                case "4" 
-                   if (value2 ==0)
-                    {
-                        Console.WriteLine("Error: Division by zero is not allowed!");
-                        continue; // restart loop
-                    }
-                    // Output
-                    Console.WriteLine($"{value1} {operationSymbol} {value2} = {result}");
-
-                    //Ask user to continue
-                    Console.Write("Do you want to continue again (Y/N)? ");
-                    again = Console.ReadKey().KeyChar;
-                    Console.WriteLine();
             }
 
-            Console.WriteLine("Thank you for using the calculator!");
+            if (valid) Console.WriteLine("Result = " + result);
+
+            Console.Write("\nContinue? (Y/N): ");
+            if (Console.ReadLine().ToUpper() == "N") break;
+            Console.WriteLine();
         }
-    }    
-    
-                    
+    }
+}
