@@ -4,96 +4,63 @@ class ReportCard
 {
     static void Main()
     {
-        // ==========================
-        // 🔹 1. Ask Total Students
-        // ==========================
         Console.Write("Enter Total Students : ");
-        int totalStudents = Convert.ToInt32(Console.ReadLine());
+        int total = int.Parse(Console.ReadLine());
 
-        // ======================================
-        // 🔹 2. Arrays to Store Student Data
-        // ======================================
-        int[,] marks = new int[totalStudents, 3]; // English, Math, Computer
-        string[] names = new string[totalStudents];
-        int[] totalMarks = new int[totalStudents];
+        // Multi-dimensional array: [student, data]
+        // 0 = name, 1 = Eng, 2 = Math, 3 = Comp, 4 = Total
+        string[,] data = new string[total, 5];
 
-        // ====================================
-        // 🔹 3. Input Student Name & Marks
-        // ====================================
-        for (int i = 0; i < totalStudents; i++)
+        // INPUT
+        for (int i = 0; i < total; i++)
         {
             Console.Write("Enter Student Name : ");
-            names[i] = Console.ReadLine();
+            data[i, 0] = Console.ReadLine();   // Example: Lucy, Bartolo
 
-            marks[i, 0] = InputMark("Enter English Marks (Out Of 100) : ");
-            marks[i, 1] = InputMark("Enter Math Marks (Out Of 100) : ");
-            marks[i, 2] = InputMark("Enter Computer Marks (Out Of 100) : ");
+            Console.Write("Enter English Marks (Out Of 100) : ");
+            int eng = int.Parse(Console.ReadLine());
 
-            // Calculate Total
-            totalMarks[i] = marks[i, 0] + marks[i, 1] + marks[i, 2];
+            Console.Write("Enter Math Marks (Out Of 100) : ");
+            int math = int.Parse(Console.ReadLine());
+
+            Console.Write("Enter Computer Marks (Out Of 100) : ");
+            int comp = int.Parse(Console.ReadLine());
+
+            int totalMarks = eng + math + comp;
+
+            data[i, 1] = eng.ToString();
+            data[i, 2] = math.ToString();
+            data[i, 3] = comp.ToString();
+            data[i, 4] = totalMarks.ToString();
+
             Console.WriteLine("*********************************************");
         }
 
-        // =======================================
-        // 🔹 4. Sorting Students by Total (DESC)
-        // =======================================
-        for (int i = 0; i < totalStudents - 1; i++)
+        // SORT (Descending by total marks)
+        for (int i = 0; i < total - 1; i++)
         {
-            for (int j = i + 1; j < totalStudents; j++)
+            for (int j = i + 1; j < total; j++)
             {
-                if (totalMarks[j] > totalMarks[i])
+                if (int.Parse(data[j, 4]) > int.Parse(data[i, 4]))
                 {
-                    // Swap Total
-                    int tempTotal = totalMarks[i];
-                    totalMarks[i] = totalMarks[j];
-                    totalMarks[j] = tempTotal;
-
-                    // Swap Names
-                    string tempName = names[i];
-                    names[i] = names[j];
-                    names[j] = tempName;
-
-                    // Swap Marks
-                    for (int s = 0; s < 3; s++)
+                    for (int k = 0; k < 5; k++)
                     {
-                        int tempMark = marks[i, s];
-                        marks[i, s] = marks[j, s];
-                        marks[j, s] = tempMark;
+                        string temp = data[i, k];
+                        data[i, k] = data[j, k];
+                        data[j, k] = temp;
                     }
                 }
             }
         }
 
-        // =======================================
-        // 🔹 5. Display Report Card
-        // =======================================
+        // OUTPUT
         Console.WriteLine("****************Report Card*******************");
 
-        for (int i = 0; i < totalStudents; i++)
+        for (int i = 0; i < total; i++)
         {
             Console.WriteLine("****************************************");
-            Console.WriteLine($"Student Name: {names[i]}, Position: {i + 1}, Total: {totalMarks[i]}/300");
+            Console.WriteLine($"Student Name: {data[i, 0]}, Position: {i + 1}, Total: {data[i, 4]}/300");
+            Console.WriteLine("****************************************");
         }
-        Console.WriteLine("****************************************");
-    }
-
-    // ======================================
-    // 🛠  Method: Validate Marks Input (0-100)
-    // ======================================
-    static int InputMark(string message)
-    {
-        int mark;
-        do
-        {
-            Console.Write(message);
-            bool isValid = int.TryParse(Console.ReadLine(), out mark);
-
-            if (!isValid || mark < 0 || mark > 100)
-            {
-                Console.WriteLine("❌ Invalid input! Please enter a number between 0 and 100.");
-            }
-        } while (mark < 0 || mark > 100);
-        
-        return mark;
     }
 }
